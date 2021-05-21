@@ -2,14 +2,171 @@
 <p></p>
 <p><img alt="" height="424" src="/images/640.jpg" width="424"/></p>
 <p>倉儲:<a href="https://github.com/40823225/cd2021">https://github.com/40823225/cd2021</a></p>
-<p>2人小組名單:40823214 40823225</p>
-<p>4人分組名單:<span>40823214 40823225 40823247 40823248</span></p>
+<p></p>
+<p></p>
+<p><span> </span></p>
 <h1>2人分組作業</h1>
+<p>2人小組名單:40823214 40823225</p>
 <h2>設計理念</h2>
 <p><img alt="" height="323" src="/images/bg6-1.png" width="916"/></p>
 <h2>自動吹笛子機</h2>
-<p><img alt="" height="527" src="/images/小組成果1.jpg" width="722"/><img alt="" height="434" src="/images/小組成果2.jpg" width="720"/></p>
-<h1>4人分組作業</h1>
+<p><img alt="" height="527" src="/images/小組成果1.jpg" width="722"/></p>
+<h2>程式模擬</h2>
+<p><span>Stage1-bg6自動吹笛子機remoteApi</span></p>
+<p><span><span>控制：</span></span></p>
+<p><span><span>f，d，s，j，k，l分別控制六根不同的桿子往下</span></span></p>
+<p><span><span>r，e，w，u，i，o控制六根桿子往上</span></span></p>
+<p><span><span>此為40823214製作</span></span></p>
+<p></p>
+<p><span><span>下載</span></span></p>
+<p><a href="https://40823225.github.io/stage3-bg6/downloads/%E5%90%B9%E7%AC%9B%E5%AD%90%E7%A8%8B%E5%BC%8F.rar"><span>吹笛子程式.rar</span></a></p>
+<p><a href="https://40823225.github.io/stage3-bg6/downloads/%E8%87%AA%E5%8B%95%E5%90%B9%E7%AC%9B%E5%AD%90remoteApi.ttt"><span><span>自動吹笛子remoteApi.ttt</span></span></a></p>
+<p><span><span>參考影片</span></span></p>
+<p><span><span><iframe allowfullscreen="allowfullscreen" height="314" src="//www.youtube.com/embed/OpoXLGUx0mQ" width="560"></iframe></span></span></p>
+<p>程式參考</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">import sim as vrep
+import math
+import random
+import time
+import keyboard
+import math
+#from winsound import Beep
+
+ 
+print ('Start')
+ 
+
+vrep.simxFinish(-1)
+
+clientID = vrep.simxStart('127.0.0.1', 19997, True, True, 5000, 5)
+ 
+if clientID != -1:
+    print ('Connected to remote API server')
+     
+    res = vrep.simxAddStatusbarMessage(
+        clientID, "test-25",
+        vrep.simx_opmode_oneshot)
+    if res not in (vrep.simx_return_ok, vrep.simx_return_novalue_flag):
+        print("Could not add a message to the status bar.")
+ 
+    
+    opmode = vrep.simx_opmode_oneshot_wait
+    STREAMING = vrep.simx_opmode_streaming
+ 
+    
+    vrep.simxStartSimulation(clientID, opmode)
+    ret,joint1=vrep.simxGetObjectHandle(clientID,"Revolute3_1",opmode)
+    ret,joint2=vrep.simxGetObjectHandle(clientID,"Revolute3_2",opmode)
+    ret,joint3=vrep.simxGetObjectHandle(clientID,"Revolute3_3",opmode)
+    ret,joint4=vrep.simxGetObjectHandle(clientID,"Revolute3_4",opmode)
+    ret,joint5=vrep.simxGetObjectHandle(clientID,"Revolute3_5",opmode)
+    ret,joint6=vrep.simxGetObjectHandle(clientID,"Revolute3_6",opmode)
+
+    ret,joint01=vrep.simxGetObjectHandle(clientID,"joint0_1",opmode)
+    ret,joint02=vrep.simxGetObjectHandle(clientID,"joint0_2",opmode)
+    ret,joint03=vrep.simxGetObjectHandle(clientID,"joint0_3",opmode)
+    ret,joint04=vrep.simxGetObjectHandle(clientID,"joint0_4",opmode)
+    ret,joint05=vrep.simxGetObjectHandle(clientID,"joint0_5",opmode)
+    ret,joint06=vrep.simxGetObjectHandle(clientID,"joint0_6",opmode)
+
+    degr=-12*math.pi/180
+    py=0.05
+    set1=False
+    set2=False
+    set3=False
+    set4=False
+    set5=False
+    set6=False
+
+    vrep.simxSetJointTargetPosition(clientID,joint1,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint01,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint2,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint02,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint3,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint03,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint4,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint04,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint5,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint05,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint6,0,opmode)
+    vrep.simxSetJointTargetPosition(clientID,joint06,0,opmode)
+
+    while True:
+        
+        if keyboard.is_pressed("f"):
+            if set1==False:
+                vrep.simxSetJointTargetPosition(clientID,joint1,degr,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint01,py,opmode)
+                set1=True
+        if keyboard.is_pressed("d"):
+            if set2==False:
+                vrep.simxSetJointTargetPosition(clientID,joint2,degr,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint02,py,opmode)
+                set2=True
+        if keyboard.is_pressed("s"):
+            if set3==False:
+                vrep.simxSetJointTargetPosition(clientID,joint3,degr,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint03,py,opmode)
+                set3=True
+        if keyboard.is_pressed("j"):
+            if set4==False:
+                vrep.simxSetJointTargetPosition(clientID,joint4,degr,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint04,py,opmode)
+                set4=True
+        if keyboard.is_pressed("k"):
+            if set5==False:
+                vrep.simxSetJointTargetPosition(clientID,joint5,degr,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint05,py,opmode)
+                set5=True
+        if keyboard.is_pressed("l"):
+            if set6==False:
+                vrep.simxSetJointTargetPosition(clientID,joint6,degr,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint06,py,opmode)
+                set6=True
+
+        
+        if keyboard.is_pressed("r"):
+            if set1==True:
+                vrep.simxSetJointTargetPosition(clientID,joint1,0,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint01,0,opmode)
+                set1=False
+        if keyboard.is_pressed("e"):
+            if set2==True:
+                vrep.simxSetJointTargetPosition(clientID,joint2,0,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint02,0,opmode)
+                set2=False
+        if keyboard.is_pressed("w"):
+            if set3==True:
+                vrep.simxSetJointTargetPosition(clientID,joint3,0,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint03,0,opmode)
+                set3=False
+        if keyboard.is_pressed("u"):
+            if set4==True:
+                vrep.simxSetJointTargetPosition(clientID,joint4,0,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint04,0,opmode)
+                set4=False
+        if keyboard.is_pressed("i"):
+            if set5==True:
+                vrep.simxSetJointTargetPosition(clientID,joint5,0,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint05,0,opmode)
+                set5=False
+        if keyboard.is_pressed("o"):
+            if set6==True:
+                vrep.simxSetJointTargetPosition(clientID,joint6,0,opmode)
+                vrep.simxSetJointTargetPosition(clientID,joint06,0,opmode)
+                set6=False
+        
+        #if(set1==true ):
+            #Beep(422, 3000) 
+        
+ 
+ 
+else:
+    print ('Failed connecting to remote API server')
+    print ('End')</pre>
+<p></p>
+<p></p><h1>4人分組作業</h1>
+<p>4人分組名單:<span>40823214 40823225 40823247 40823248</span></p>
 <h2>多功能腳踏車衝擊測試機</h2>
 <h3>1.腳踏車架衝擊測試</h3>
 <p>參考規範</p>
@@ -58,11 +215,13 @@
 <p><span>前叉衝擊</span></p>
 <p><span><img alt="" height="1153" src="/images/前叉衝擊.jpg" width="993"/></span></p>
 <h1>8人分組作業</h1>
+<p><span>小組成員：40823211 40823214 40823216 40823218 40823225 40823238 40823247 40823248</span></p>
 <h2>機械手臂</h2>
 <p>原本我們的主題，是在我們原本在stage2-bg6所做的腳踏車衝擊測試機跟機械手臂在做選擇，但考慮到<span>腳踏車衝擊測試機的零件數過多及他所會遇到的力學相關的問題，所以我們最後討論出來的結果是，將主題訂為機械手臂。</span></p>
 <h3>繪圖成果</h3>
 <p><span>此為不含夾爪有六軸的機械手臂</span></p>
-<p><span><img alt="" height="708" src="/images/機械手臂成品.jpg" width="890"/></span></p><h1>影片</h1>
+<p><span><img alt="" height="708" src="/images/機械手臂成品.jpg" width="890"/></span></p>
+<h1>影片</h1>
 <h2>第一周</h2>
 <p><iframe allowfullscreen="allowfullscreen" height="314" src="//www.youtube.com/embed/D4YpHmFXFnw" width="560"></iframe></p>
 <p><a href="https://youtu.be/D4YpHmFXFnw" title="https://youtu.be/D4YpHmFXFnw">https://youtu.be/D4YpHmFXFnw</a></p>
